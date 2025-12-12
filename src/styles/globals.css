@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------
+   Tokens & layout
+   ------------------------------*/
+:root{
+  --page-max-width: 1320px;
+  --outer-radius: 28px;
+  --inner-radius: 16px;
+  --outer-border: 18px; /* thick outer border like example */
+  --accent-1: #1f6f92;
+  --accent-2: #4aa8cc;
+  --muted: #365a66;
+  --bg-light: #f2fbfd;
+}
+
+/* page background (keeps the soft radial/light-blue) */
+body{
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  min-height:100vh;
+  margin:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(1200px 520px at 90% 10%, #cbeef9 0%, rgba(255,255,255,0.25) 20%, transparent 40%),
+    radial-gradient(900px 420px at 6% 86%, #c2e5f7 0%, rgba(255,255,255,0.12) 10%, transparent 30%),
+    linear-gradient(180deg,#bfe7f7 0%, #d7f2fb 100%);
+}
+
+/* big rounded outer shell (the thick pale border visible in example) */
+.app-shell {
+  width: 96%;
+  max-width: var(--page-max-width);
+  height: 74vh;
+  border-radius: var(--outer-radius);
+  padding: calc(var(--outer-border));
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(245,252,255,0.98));
+  box-shadow: 0 40px 80px rgba(9,45,66,0.12);
+  position: relative;
+  overflow: hidden;
+  border: 0; /* outer border created by padding + inner-panel bg */
+}
+
+/* inner rounded panel with subtle inner shadow */
+.inner-panel {
+  height: 100%;
+  border-radius: calc(var(--outer-radius) - 8px);
+  padding: 48px 72px;
+  background: linear-gradient(180deg, rgba(245,255,255,0.98), rgba(250,255,255,0.98));
+  box-shadow:
+    inset 0 12px 28px rgba(255,255,255,0.75),
+    inset 0 -8px 20px rgba(2,30,40,0.03),
+    0 12px 30px rgba(8,34,46,0.04);
+  display:flex;
+  flex-direction:column;
+}
+
+/* Title */
+.title {
+  font-family: "Playfair Display", serif;
+  font-size: 64px; /* larger like example */
+  font-weight: 700;
+  color: rgb(7,73,96);
+  text-align:center;
+  margin:0;
+  line-height:1;
+  letter-spacing: 0.2px;
+}
+
+/* gradient for second word */
+.gradient-title{
+  background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display:inline-block;
+}
+
+/* subtitle bubble */
+.subtitle-bubble{
+  display:inline-block;
+  margin: 10px auto 18px;
+  background: #ffffff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(12,61,76,0.06);
+  font-size:13px;
+  color: var(--muted);
+}
+
+/* progress bar with segmented ticks */
+.progress-row {
+  width: 72%;
+  margin: 18px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 22px;
+}
+.progress-track {
+  height: 6px;
+  background: rgba(14,59,72,0.08);
+  border-radius: 8px;
+  width: 220px; /* width of each segment */
+  position: relative;
+}
+.progress-active {
+  position:absolute;
+  left:0;
+  top:0;
+  height:100%;
+  width: 84%; /* active percent inside segment */
+  background: linear-gradient(90deg,#15343f,#6aa6bf);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(17,68,86,0.12);
+}
+.progress-separator {
+  height:6px;
+  width:220px;
+  background: rgba(14,59,72,0.04);
+  border-radius:8px;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);
+}
+
+/* quiz area */
+.quiz-area {
+  display:flex;
+  flex:1;
+  align-items:center;
+  justify-content:center;
+}
+
+/* quiz cards */
+.quiz-card {
+  width:100%;
+  max-width:760px;
+  margin: 0 auto;
+}
+.question {
+  background: linear-gradient(90deg, rgba(14,152,189,0.09), rgba(14,152,189,0.03));
+  border-radius: 10px;
+  padding: 14px 18px;
+  text-align:center;
+  color: rgb(18,62,74);
+  font-weight:700;
+  box-shadow: 0 6px 12px rgba(4,20,30,0.04);
+}
+
+/* options list */
+.options {
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.option {
+  padding:14px;
+  border-radius:10px;
+  background: rgba(232,249,253,0.85); /* very light cyan like example */
+  border: 1px solid rgba(22,98,118,0.06);
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  text-align:center;
+  color: rgb(11,59,71);
+  font-weight:600;
+  box-shadow: 0 6px 18px rgba(6,30,43,0.04);
+}
+.option:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(8,36,46,0.10);
+}
+.option--active {
+  background: linear-gradient(90deg,#d7f6fb,#e9fbff);
+  border: 1px solid rgba(33,120,140,0.12);
+}
+
+/* nav arrows bottom-right */
+.nav-arrows{
+  position:absolute;
+  right: 56px;
+  bottom: 40px;
+  display:flex;
+  gap:12px;
+}
+.nav-btn{
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 10px 20px rgba(6,30,43,0.06);
+  border: 1px solid rgba(8,36,46,0.04);
+  cursor:pointer;
+}
+.nav-btn:active{ transform: translateY(1px); }
+
+/* paw + speech bubble on left bottom */
+.paw-wrapper {
+  position:absolute;
+  left: 30px;
+  bottom: 34px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  z-index:6;
+}
+.speech {
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size:13px;
+  box-shadow: 0 8px 20px rgba(15,56,68,0.06);
+  color: #123a44;
+}
+.paw {
+  width:98px;
+  height:98px;
+  display:block;
+  transform: translateY(6px);
+}
+
+/* small responsive guard */
+@media (max-width: 1200px){
+  .app-shell{ height:auto; padding:14px; }
+  .inner-panel{ padding:28px; }
+  .title{ font-size:44px; }
+  .paw{ width:70px;height:70px; }
+}
