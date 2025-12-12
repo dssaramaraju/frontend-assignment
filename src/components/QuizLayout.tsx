@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 type Question = {
@@ -13,7 +13,6 @@ type Props = {
 
 export default function QuizLayout({ questions }: Props) {
   const [index, setIndex] = useState<number>(0);
-  // selectedAnswers holds the chosen option index per question or null if unanswered
   const [selectedAnswers, setSelectedAnswers] = useState<Array<number | null>>(
     () => questions.map(() => null)
   );
@@ -21,51 +20,40 @@ export default function QuizLayout({ questions }: Props) {
 
   const current = questions[index];
 
-  // Count correct answers (used after submit)
   const score = useMemo(() => {
     let s = 0;
     for (let i = 0; i < questions.length; i++) {
-      const sel = selectedAnswers[i];
-      if (sel !== null && sel === questions[i].correctIndex) s++;
+      if (selectedAnswers[i] === questions[i].correctIndex) s++;
     }
     return s;
   }, [selectedAnswers, questions]);
 
   const percent = Math.round((score / questions.length) * 100);
 
-  const handleSelect = (optionIdx: number) => {
+  const handleSelect = (optIdx: number) => {
     setSelectedAnswers((prev) => {
       const copy = [...prev];
-      copy[index] = optionIdx;
+      copy[index] = optIdx;
       return copy;
     });
   };
 
   const goNext = () => {
-    // if last question -> submit
+    if (selectedAnswers[index] === null) return;
+
     if (index === questions.length - 1) {
-      // require selection before submit
-      if (selectedAnswers[index] === null) {
-        // simple UX: do nothing if not selected (could show a toast)
-        return;
-      }
       setSubmitted(true);
       return;
     }
-    // require selection before moving forward (optional — remove if you want free nav)
-    if (selectedAnswers[index] === null) {
-      // do not advance until selection (mirrors many quiz UIs)
-      return;
-    }
-    setIndex((i) => Math.min(i + 1, questions.length - 1));
+
+    setIndex((prev) => prev + 1);
   };
 
   const goPrev = () => {
-    setIndex((i) => Math.max(i - 1, 0));
+    if (index > 0) setIndex((prev) => prev - 1);
   };
 
   const handleSubmit = () => {
-    // final submit action: ensure last question selected
     if (selectedAnswers[index] === null) return;
     setSubmitted(true);
   };
@@ -76,14 +64,10 @@ export default function QuizLayout({ questions }: Props) {
     setSubmitted(false);
   };
 
-  // progress segments count equals number of questions
   const segments = questions.map((_, i) => i);
-
-  // Determine whether Submit button should render (on last question)
   const isLast = index === questions.length - 1;
 
   if (submitted) {
-    // Final full-screen result view (centered)
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "transparent" }}>
         <div className="w-full h-full flex flex-col items-center justify-center" style={{ padding: 40 }}>
@@ -97,15 +81,13 @@ export default function QuizLayout({ questions }: Props) {
             {percent} <span style={{ fontSize: 36, verticalAlign: "super" }}>%</span>
           </div>
 
-          <div style={{ marginTop: 30 }}>
-            <button
-              onClick={handleRestart}
-              className="option"
-              style={{ padding: "10px 28px", borderRadius: 8, background: "linear-gradient(90deg,#dff6fb,#e6fbff)" }}
-            >
-              Start Again
-            </button>
-          </div>
+          <button
+            onClick={handleRestart}
+            className="option"
+            style={{ padding: "10px 28px", borderRadius: 8, marginTop: 32 }}
+          >
+            Start Again
+          </button>
         </div>
       </div>
     );
@@ -121,15 +103,21 @@ export default function QuizLayout({ questions }: Props) {
 
           <div className="subtitle-bubble">Answer all questions to see your results</div>
 
-          {/* segmented progress row */}
           <div className="progress-row" aria-hidden>
-            {segments.map((s, i) => {
-              // a segment is "filled" when its index <= current index
+            {segments.map((_, i) => {
               const filled = i <= index;
               return (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 18 }}>
-                  <div className={filled ? "progress-track" : "progress-separator"} style={{ width: 220 }}>
-                    {filled && <div className="progress-active" style={{ width: i === index ? "55%" : "100%" }} />}
+                  <div
+                    className={filled ? "progress-track" : "progress-separator"}
+                    style={{ width: 220 }}
+                  >
+                    {filled && (
+                      <div
+                        className="progress-active"
+                        style={{ width: i === index ? "55%" : "100%" }}
+                      />
+                    )}
                   </div>
                 </div>
               );
@@ -149,9 +137,9 @@ export default function QuizLayout({ questions }: Props) {
                 return (
                   <button
                     key={optIdx}
+                    onClick={() => handleSelect(optIdx)}
                     role="listitem"
                     aria-pressed={active}
-                    onClick={() => handleSelect(optIdx)}
                     className={`option w-full ${active ? "option--active" : ""}`}
                   >
                     {opt}
@@ -160,36 +148,29 @@ export default function QuizLayout({ questions }: Props) {
               })}
             </div>
 
-            {/* optional: show helper about required selection */}
-            <div style={{ height: 18 }} />
+            <div style={{ height: 20 }} />
 
-            {/* Bottom area: previous/next/submit buttons */}
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 18, gap: 12 }}>
-              <button
-                onClick={goPrev}
-                className="nav-btn"
-                style={{ display: index === 0 ? "none" : undefined }}
-                aria-label="Previous question"
-              >
-                <FaChevronLeft />
-              </button>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}>
+              {index !== 0 && (
+                <button className="nav-btn" onClick={goPrev} aria-label="Previous question">
+                  <FaChevronLeft />
+                </button>
+              )}
 
               {isLast ? (
                 <button
                   onClick={handleSubmit}
                   className="nav-btn"
-                  aria-label="Submit"
-                  style={{
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    background: "linear-gradient(90deg,#e6fbff,#dff6fb)",
-                    border: "1px solid rgba(14,73,92,0.12)",
-                  }}
+                  aria-label="Submit quiz"
                 >
                   Submit
                 </button>
               ) : (
-                <button onClick={goNext} className="nav-btn" aria-label="Next">
+                <button
+                  onClick={goNext}
+                  className="nav-btn"
+                  aria-label="Next question"
+                >
                   <FaChevronRight />
                 </button>
               )}
@@ -197,11 +178,11 @@ export default function QuizLayout({ questions }: Props) {
           </div>
         </main>
 
-        {/* paw and speech bubble kept from previous layout */}
         <div className="paw-wrapper" aria-hidden style={{ position: "absolute", left: 28, bottom: 34 }}>
           <div className="speech">Best of Luck !</div>
 
-          <svg className="paw" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          {/* Paw SVG */}
+          <svg className="paw" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="60" cy="76" rx="22" ry="20" fill="#ffe7ef" stroke="#ffd1df" strokeWidth="1.5" />
             <ellipse cx="42" cy="46" rx="10" ry="12" fill="#ffd6e6" stroke="#ffbfd6" strokeWidth="1.2" />
             <ellipse cx="60" cy="38" rx="10.5" ry="12.5" fill="#ffcfe0" stroke="#ffbfd6" strokeWidth="1.2" />
