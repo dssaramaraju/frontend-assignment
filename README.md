@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# 📘 Frontend Intern Assignment – README
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Live Demo  
+(https://frontend-assignment-seven-lilac.vercel.app/)
 
-Currently, two official plugins are available:
+## 📦 GitHub Repository  
+(https://github.com/dssaramaraju/frontend-assignment)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+# 🧾 Overview
+This project is the submission for the **Frontend Developer Intern Assignment**.  
+The goal was to **recreate the provided Figma quiz design with pixel-perfect accuracy** and implement the multi-step quiz flow exactly as shown in the given prototype.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# 🛠 Tech Stack Used
+- **React (Vite)**
+- **JavaScript / TypeScript**
+- **Tailwind CSS**
+- **React Icons**
+- **Vercel (Deployment)**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# ✨ Key Features Implemented
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🎨 Pixel-Perfect UI
+- Exact recreation of the Figma quiz screens  
+- Accurate colors, spacing, layout, fonts, gradients, and shadows  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🧭 Multi-Step Quiz Navigation
+- Previous and Next buttons  
+- Segmented progress indicator updating per question  
+- Prevents moving forward without selecting an answer  
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🧩 Interactive Question Selection
+- Highlighted selected option  
+- Smooth transitions & hover effects  
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🧮 Final Score Calculation
+- Computes total correct answers  
+- Displays percentage score on a clean result screen  
+- Includes “Start Again” button to reset the quiz  
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🐾 Decorative Elements
+- Paw icon with speech bubble placed exactly as in Figma  
+- Styled to match prototype visuals  
+
+### ♿ Accessibility Features
+- aria-labels for navigation buttons  
+- Semantic elements (buttons, headings, roles)  
+- Keyboard-navigable options  
+
+### 💻 Desktop-First Layout
+- Optimized for desktop screens as required in assignment guidelines  
+
+---
+
+# 📁 Folder Structure
+/public
+/assets
+paw.png (optional if using SVG)
+
+/src
+/components
+QuizLayout.tsx
+/styles
+globals.css
+App.tsx
+main.tsx
+
+index.html
+README.md
+
+---
+
+# ⚙ Setup Instructions
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/yourusername/frontend-assignment
+cd frontend-assignment
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Start Development Server
+npm run dev
+
+4️⃣ Build for Production
+npm run build
+
+📝 Assumptions Made
+
+Quiz content and sequence follow the Figma design exactly
+
+Desktop-focused layout as required
+
+No backend required, fully client-side
+
+⏱ Time Spent
+
+Total time spent on assignment: Update here (e.g., 8 hours)
+
+🙌 Thank You
+
+Thank you for reviewing this submission.
+Feel free to reach out for clarification or improvements.
